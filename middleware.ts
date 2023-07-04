@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import langParser from "accept-language-parser";
 
 import { defaultLocale, locales, getLocalePartsFrom, defaultLocales } from "./i18n";
-import { get } from "http";
 
 const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: any) => {
   // parse the locales acceptable in the header, and sort them by priority (q)
@@ -108,13 +107,16 @@ export function middleware(request: NextRequest) {
       if (defaultLang.length > 0) {
         const matchedLocaleParts = getLocalePartsFrom({ locale: defaultLang[0] })
         if (matchedLocaleParts.country === getLocalePartsFrom({ locale: defaultLocale }).country) {
+          console.log('test')
           return NextResponse.redirect(
             new URL(
-              `/${matchedLocaleParts.country}/${matchedLocaleParts.lang}${pathname.replace("/" + matchedLocaleParts.country, "")}`,
+              pathname.replace(
+                `/${defaultLocaleParts.country}`,
+                ""
+              ),
               request.url
-            )
-          );
-        }
+            ))
+        };
         return NextResponse.rewrite(
           new URL(
             `/${matchedLocaleParts.country}/${matchedLocaleParts.lang}${pathname.replace("/" + matchedLocaleParts.country, "")}`,
