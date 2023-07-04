@@ -22,7 +22,7 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
     if (matchedLocale) {
       return matchedLocale;
     }
-    // if we didn't find a match for both language and country, try just the language
+    // if we didn't find a match for both language and country, try just the country
     else {
       const matchedCountry = defaultLocales.find((locale) => {
         const localeParts = getLocalePartsFrom({ locale });
@@ -30,9 +30,19 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
       });
       if (matchedCountry) {
         return matchedCountry;
+      } else {
+        // if we didn't find a match for both language and country, try just the language
+        const matchedLanguage = locales.find((locale) => {
+          const localeParts = getLocalePartsFrom({ locale });
+          return parsedLang.code === localeParts.lang;
+        });
+        if (matchedLanguage) {
+          return matchedLanguage;
+        }
       }
     }
   }
+
   // if we didn't find a match, return the default locale
   return defaultLocale;
 };
