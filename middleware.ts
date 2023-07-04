@@ -39,7 +39,8 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
         });
         
 
-        if (matchedLanguage && !matchedLanguage.includes("en-US")) {
+        if (matchedLanguage && !matchedLanguage.includes("US")) {
+          console.log(matchedLanguage)
           return matchedLanguage;
         }
       }
