@@ -39,7 +39,7 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
         });
         
 
-        if (matchedLanguage && matchedLanguage.toLocaleLowerCase().includes("en-US")) {
+        if (matchedLanguage && !matchedLanguage.toLocaleLowerCase().includes("en-US")) {
           return matchedLanguage;
         }
       }
