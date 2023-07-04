@@ -20,11 +20,6 @@ export default async function Home({
   return (
     <div>
       <h1>{translate("welcome.helloWorld")}</h1>
-      <h2>
-        {translate("welcome.happyYear", {
-          year: new Date().getFullYear(),
-        })}
-      </h2>
     </div>
   );
 }
