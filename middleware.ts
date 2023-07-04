@@ -35,12 +35,13 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
         // if we didn't find a match for both language and country, try just the language
         const matchedLanguage = locales.find((locale) => {
           const localeParts = getLocalePartsFrom({ locale });
-          return parsedLang.code === localeParts.lang;
+          
+
+          return( parsedLang.code+"-"+parsedLang.region === locale );
         });
-        
 
         if (matchedLanguage && !matchedLanguage.includes("US")) {
-          console.log(matchedLanguage)
+         
           return matchedLanguage;
         }
       }
