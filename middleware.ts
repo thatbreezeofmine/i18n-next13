@@ -44,43 +44,43 @@ export function middleware(request: NextRequest) {
   const currentPathnameParts = getLocalePartsFrom({ pathname });
 
   // Check if the default locale is in the pathname
-    if (
-      currentPathnameParts.lang === defaultLocaleParts.lang &&
-      currentPathnameParts.country === defaultLocaleParts.country
-    ) {
-      // we want to REMOVE the default locale from the pathname,
-      // and later use a rewrite so that Next will still match
-      // the correct code file as if there was a locale in the pathname
-        return NextResponse.redirect(
-          new URL(
-            pathname.replace(
-              `/${defaultLocaleParts.country}/${defaultLocaleParts.lang}`,
-              pathname.startsWith("/") ? "/" : ""
-            ),
-            request.url
-          )
-        );
-    }
+  if (
+    currentPathnameParts.lang === defaultLocaleParts.lang &&
+    currentPathnameParts.country === defaultLocaleParts.country
+  ) {
+    // we want to REMOVE the default locale from the pathname,
+    // and later use a rewrite so that Next will still match
+    // the correct code file as if there was a locale in the pathname
+    return NextResponse.redirect(
+      new URL(
+        pathname.replace(
+          `/${defaultLocaleParts.country}/${defaultLocaleParts.lang}`,
+          pathname.startsWith("/") ? "/" : ""
+        ),
+        request.url
+      )
+    );
+  }
 
-    var defaultLang: any = defaultLocales.filter((locale) => {
-      const mylocaleParts = getLocalePartsFrom({ locale });
-      return (
-        currentPathnameParts.country === mylocaleParts.country
+  var defaultLang: any = defaultLocales.filter((locale) => {
+    const mylocaleParts = getLocalePartsFrom({ locale });
+    return (
+      currentPathnameParts.country === mylocaleParts.country
+    );
+  });
+
+  if (defaultLang.length > 0) {
+    const matchedLocaleParts = getLocalePartsFrom({ locale: defaultLang[0] })
+
+    if (matchedLocaleParts.lang === currentPathnameParts.lang) {
+      return NextResponse.redirect(
+        new URL(
+          `/${matchedLocaleParts.country}${pathname.replace("/" + matchedLocaleParts.country + "/" + matchedLocaleParts.lang, "")}`,
+          request.url
+        )
       );
-    });
-
-    if (defaultLang.length > 0) {
-      const matchedLocaleParts = getLocalePartsFrom({ locale: defaultLang[0] })
-
-      if (matchedLocaleParts.lang === currentPathnameParts.lang) {
-        return NextResponse.redirect(
-          new URL(
-            `/${matchedLocaleParts.country}${pathname.replace("/" + matchedLocaleParts.country + "/" + matchedLocaleParts.lang, "")}`,
-            request.url
-          )
-        );
-      }
     }
+  }
 
 
   const pathnameIsMissingValidLocale = locales.every((locale) => {
@@ -107,7 +107,6 @@ export function middleware(request: NextRequest) {
       if (defaultLang.length > 0) {
         const matchedLocaleParts = getLocalePartsFrom({ locale: defaultLang[0] })
         if (matchedLocaleParts.country === getLocalePartsFrom({ locale: defaultLocale }).country) {
-          console.log('test')
           return NextResponse.redirect(
             new URL(
               pathname.replace(
