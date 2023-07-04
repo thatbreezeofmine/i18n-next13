@@ -19,6 +19,7 @@ export default async function Home({
   );
   return (
     <div>
+      <p>{JSON.stringify(params)}</p>
       <h1>{translate("welcome.helloWorld")}</h1>
     </div>
   );
