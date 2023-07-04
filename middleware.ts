@@ -28,15 +28,19 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
         const localeParts = getLocalePartsFrom({ locale });
         return currentPathnameParts.country === localeParts.country;
       });
-      if (matchedCountry) {
+      if (matchedCountry ) {
         return matchedCountry;
-      } else {
+      } 
+      else {
         // if we didn't find a match for both language and country, try just the language
         const matchedLanguage = locales.find((locale) => {
           const localeParts = getLocalePartsFrom({ locale });
           return parsedLang.code === localeParts.lang;
         });
-        if (matchedLanguage) {
+        
+
+        if (matchedLanguage && matchedLanguage.toLocaleLowerCase().includes("en-US")) {
+          console.log(matchedLanguage)
           return matchedLanguage;
         }
       }
@@ -145,7 +149,7 @@ export function middleware(request: NextRequest) {
       });
 
       const localeParts = getLocalePartsFrom({ locale: defaultLang[0] });
-      console.log(localeParts.lang, matchedLocaleParts.lang)
+      // console.log(localeParts.lang, matchedLocaleParts.lang)
       if (localeParts.lang == matchedLocaleParts.lang) {
         return NextResponse.redirect(
           new URL(
