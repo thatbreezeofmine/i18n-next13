@@ -19,6 +19,8 @@ export default async function Demo({
   );
   return (
     <div>
+            <p>{JSON.stringify(params)}</p>
+
       <h1>Example page: {translate("welcome.helloWorld")}</h1>
     </div>
   );
