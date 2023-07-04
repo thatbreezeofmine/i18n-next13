@@ -40,7 +40,6 @@ const findBestMatchingLocale = (acceptLangHeader: string, currentPathnameParts: 
         
 
         if (matchedLanguage && matchedLanguage.toLocaleLowerCase().includes("en-US")) {
-          console.log(matchedLanguage)
           return matchedLanguage;
         }
       }
