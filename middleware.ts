@@ -55,7 +55,7 @@ export function middleware(request: NextRequest) {
       new URL(
         pathname.replace(
           `/${defaultLocaleParts.country}/${defaultLocaleParts.lang}`,
-          pathname.startsWith("/") ? "/" : ""
+          pathname.split('/').length > 3 ? "" : "/"
         ),
         request.url
       )
@@ -71,7 +71,6 @@ export function middleware(request: NextRequest) {
 
   if (defaultLang.length > 0) {
     const matchedLocaleParts = getLocalePartsFrom({ locale: defaultLang[0] })
-
     if (matchedLocaleParts.lang === currentPathnameParts.lang) {
       return NextResponse.redirect(
         new URL(
@@ -81,7 +80,6 @@ export function middleware(request: NextRequest) {
       );
     }
   }
-
 
   const pathnameIsMissingValidLocale = locales.every((locale) => {
     const localeParts = getLocalePartsFrom({ locale });
@@ -126,6 +124,7 @@ export function middleware(request: NextRequest) {
     }
 
     if (matchedLocale !== defaultLocale) {
+
       const matchedLocaleParts = getLocalePartsFrom({ locale: matchedLocale });
 
       var defaultLang: any = defaultLocales.filter((locale) => {
@@ -153,6 +152,7 @@ export function middleware(request: NextRequest) {
         )
       );
     } else {
+
       return NextResponse.rewrite(
         new URL(
           `/${defaultLocaleParts.country}/${defaultLocaleParts.lang}${pathname}`,
